@@ -21,6 +21,5 @@ namespace CityVisitTrackerAPI.Models
 
         public DateTime LastUpdated { get; set; }
 
-        public virtual State State { get; set; }
     }
 }

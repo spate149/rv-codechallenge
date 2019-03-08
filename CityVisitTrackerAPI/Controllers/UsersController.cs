@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -104,8 +105,9 @@ namespace CityVisitTrackerAPI.Controllers
         [HttpGet]
         public IActionResult GetAllStatesVisitedByUser([FromRoute] int userId, CancellationToken cancel)
         {
-            var userVisitedStates = this._context.UserCityVisits.Include(x => x.City).Select(x => x.City.State).ToList().Distinct().Select(x => x.Name).ToList();
-            return this.Ok(userVisitedStates);
+            var userVisitedStateIds = this._context.UserCityVisits.Include(x => x.City).Select(x => x.City.StateId).ToList().Distinct();
+            var states = userVisitedStateIds.Select(stateId => this._context.State.FirstOrDefault(x => x.StateId == stateId)).ToList().Select(x => x.Name);
+            return this.Ok(states);
         }
     }
 }
